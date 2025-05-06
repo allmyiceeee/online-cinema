@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h1>{{ movie.title }}</h1>
+<p>{{ movie.overview }}</p>
+<img src="{{ movie.poster_url }}" width="200">
+
+<h2>Похожие фильмы:</h2>
+<div class="recommendations">
+    {% for rec in recommendations %}
+        <div class="movie-card">
+            <img src="{{ rec.poster_url }}" alt="{{ rec.title }}" style="width: 150px; height: auto;">
+            <h3>{{ rec.title }}</h3>
+        </div>
+    {% endfor %}
+</div>
+{% endblock content %}
+
