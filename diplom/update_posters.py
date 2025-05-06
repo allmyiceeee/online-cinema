@@ -1,18 +1,25 @@
 import os
 import django
 import requests
+from first.models import Movie 
 
 # Настройка Django окружения
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'diplom.settings')
 django.setup()
 
-from first.models import Movie 
 
 API_KEY = '4aaa2e5c484bf9dea5ab38738d634d7f'  
 TMDB_SEARCH_URL = 'https://api.themoviedb.org/3/search/movie'
 TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'
 
 def get_poster_url(title):
+    '''
+Получает URL постера для фильма с указанным названием. 
+Функция отправляет запрос GET в API TMDB с названием фильма в качестве параметра запроса. Если путь постера не равен None, функция возвращает URL изображения постера, 
+объединяя базовый URL изображения TMDB с путем постера.Если код статуса ответа не равен 200 или путь постера равен None, функция возвращает None.
+:param title: Название фильма
+:return: URL изображения постера или None
+'''
     params = {
         'api_key': API_KEY,
         'query': title,
@@ -34,6 +41,11 @@ def get_poster_url(title):
 
 
 def update_movies_with_posters():
+    '''
+    Функция проверяет наличие постеров и обновляет их, если они есть.
+    Можно дополнить функцию, чтобы обновляло те постеры, которых нет. Однако это вызывало ошибку, что постеры не обновлялись,
+    при первом запуске сайта, постеры снова берутся с сайта, что занимает 10+- минут
+    '''
     movies = Movie.objects.all()
     for movie in movies:
         poster_url = get_poster_url(movie.title)

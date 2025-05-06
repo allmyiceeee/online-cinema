@@ -69,7 +69,7 @@ def movie_detail(request, movie_id):
     return render(request, 'first/movie_detail.html', 
     {
         'movie': movie,
-        'recommendations': recommendations
+        'recommended_movies': recommendations
     })
     
     

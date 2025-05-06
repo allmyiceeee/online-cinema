@@ -1,19 +1,31 @@
-{% extends "base.html" %}
 
+{% extends 'base.html' %}
+{% block title %}{{ movie.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ movie.title }}</h1>
-<p>{{ movie.overview }}</p>
-<img src="{{ movie.poster_url }}" width="200">
-
-<h2>Похожие фильмы:</h2>
-<div class="recommendations">
-    {% for rec in recommendations %}
-        <div class="movie-card">
-            <img src="{{ rec.poster_url }}" alt="{{ rec.title }}" style="width: 150px; height: auto;">
-            <h3>{{ rec.title }}</h3>
+<div class="movie-detail-container">
+    <div class="movie-info_detail">
+        <img class="movie-poster" src="{{ movie.poster_url }}" alt="{{ movie.title }}">
+        <div class="movie-meta">
+            <h1>{{ movie.title }}</h1>
+            <p><strong>Жанр:</strong> {{ movie.genre }}</p>
+            <p><strong>Рейтинг:</strong> {{ movie.imdb_rating }}</p>
+            <p><strong>Описание:</strong> {{ movie.overview }}</p>
         </div>
-    {% endfor %}
-</div>
-{% endblock content %}
+    </div>
 
+    <hr>
+
+    <h2>Рекомендуемые фильмы</h2>
+    <div class="recommended-movies">
+        {% for rec_movie in recommended_movies %}
+            <div class="recommended-card">
+                <a href="{% url 'movie_detail' rec_movie.id %}">
+                    <img src="{{ rec_movie.poster_url }}" alt="{{ rec_movie.title }}">
+                    <h2>{{ rec_movie.title }}</h2 >
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
