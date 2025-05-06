@@ -5,11 +5,11 @@ from first.models import Movie
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
+from .forms import FeedbackForm
 
 menu = [
-        {'title': "Главная страница", 'url_name': 'home'},
+        {'title': "Главная страница", 'url_name': 'movie_list'},
         {'title': "О сайте", 'url_name': 'about'},
-        {'title': "Рекомендации", 'url_name': 'recc'},
         {'title': "Обратная связь", 'url_name': 'contact'},
         {'title': "Войти", 'url_name': 'login'}
         
@@ -30,7 +30,25 @@ def recc(request: HttpRequest) -> HttpResponse:
     return render(request, 'first/recc.html', {'title': 'О сайте', 'menu': menu}) 
 
 def contact(request: HttpRequest) -> HttpResponse:
-    return render(request, 'first/contact.html', {'title': 'О сайте', 'menu': menu}) 
+    '''Если форма валидна сохраняем сообщение в БД и показываем сообщение об успехе'''
+    # Создаём форму либо с данными из POST, либо пустую
+    form = FeedbackForm(request.POST or None)
+    success = False
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            success = True
+            # после сохранения сбросим форму, чтобы на странице 
+            # отобразилась пустая форма с сообщением об успехе
+            form = FeedbackForm()
+    return render(request, 'first/contact.html', 
+            {
+            'title': 'Обратная связь',
+            'menu': menu, 
+            'form': form, 
+            'success': success
+            }) 
 
 def login(request: HttpRequest) -> HttpResponse:
     return render(request, 'first/login.html', {'title': 'О сайте', 'menu': menu}) 
@@ -69,10 +87,11 @@ def movie_detail(request, movie_id):
     return render(request, 'first/movie_detail.html', 
     {
         'movie': movie,
-        'recommended_movies': recommendations
+        'recommended_movies': recommendations,
+        'menu': menu,
     })
     
     
 def movie_list(request):
     movies = Movie.objects.all().order_by('title') 
-    return render(request, 'first/movie_list.html', {'movies': movies})
+    return render(request, 'first/movie_list.html', {'movies': movies, 'menu': menu})      

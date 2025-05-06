@@ -21,7 +21,7 @@ from first import views # type: ignore
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('about', views.about, name='about'),
-    path('recc', views.recc, name='recc'),
+
     path('contact', views.contact, name='contact'),
     path('login', views.login, name='login'),
     path('movie/<int:movie_id>/', views.movie_detail, name='movie_detail'),

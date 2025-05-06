@@ -12,9 +12,11 @@
         <div class="container">
             <h1>Онлайн-Кинотеатр</h1>
             <ul class="nav-links">
-                <li><a href="/">Главная</a></li>
-                <li><a href="#">О нас</a></li>
-                <li><a href="#">Контакты</a></li>
+                
+                {% for item in menu %}
+                    <li><a href="{% url item.url_name %}"> {{ item.title }} </a></li>
+                {% endfor %}
+                
             </ul>
         </div>
     </nav>
