@@ -5,7 +5,7 @@
     <main class="container">
         <h2>Фильмы</h2>
         <div class="movie-list">
-            {% for movie in movies %}
+            {% for movie in page_obj %}
                 <div class="movie-card">
                     <img src="{{ movie.poster_url }}" alt="{{ movie.title }}">
                     <div class="movie-info">
@@ -21,6 +21,21 @@
                 </div>
             {% endfor %}
         </div>
-    </main>
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page=1">первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}">назад</a>
+            {% endif %}
+            <span class='current-page'>
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">вперед</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">последняя</a>
+            {% endif %}
+        </div>
+        </main>
+
 {% endblock content %}
 
