@@ -6,7 +6,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from .forms import FeedbackForm
-
+from django.core.paginator import Paginator
 menu = [
         {'title': "Главная страница", 'url_name': 'movie_list'},
         {'title': "О сайте", 'url_name': 'about'},
@@ -93,5 +93,11 @@ def movie_detail(request, movie_id):
     
     
 def movie_list(request):
+    
     movies = Movie.objects.all().order_by('title') 
-    return render(request, 'first/movie_list.html', {'movies': movies, 'menu': menu})      
+    paginator = Paginator(movies, 12)
+    
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'first/movie_list.html', {'movies': movies, 'menu': menu, 'page_obj': page_obj})      

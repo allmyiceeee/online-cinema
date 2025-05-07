@@ -194,3 +194,31 @@ body {
     border-radius: 6px;
     margin-bottom: 1rem;
 }
+
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 8px 14px;
+    margin: 0 5px;
+    color: white;
+    background-color: #3a82f7;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.pagination a:hover {
+    background-color: #1e60d3;
+}
+
+.pagination .current-page {
+    display: inline-block;
+    padding: 8px 14px;
+    margin: 0 5px;
+    color: #fff;
+}
+
