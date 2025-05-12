@@ -8,6 +8,7 @@ class Movie(models.Model):
     imdb_rating = models.FloatField()
     year = models.IntegerField()
     poster_url = models.URLField()
+    trailer_id = models.CharField(max_length=20,blank=True, null=True)
     
     def __str__(self):
         return self.title
@@ -19,4 +20,7 @@ class Feedback(models.Model):
     create_time = models.DateTimeField('Дата отправки', auto_now_add=True)    
     
     def __str__(self):
-        return f'{self.name} ({self.email}) — {self.created_at:%Y-%m-%d %H:%M}'
+        return f'{self.name} ({self.email}) — {self.create_time:%Y-%m-%d %H:%M}'
+
+class Genre(models.Model):
+    genre = 

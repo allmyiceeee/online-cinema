@@ -14,9 +14,18 @@
         </div>
     </div>
 
-    <hr>
+    {% if movie.trailer_id %}
+        <h3>Смотреть трейлер</h3>
+        <iframe width="40% ", height="450"
+        src="https://www.youtube.com/embed/{{ movie.trailer_id }}"
+            frameborder="0"
+            allowfullscreen>
+        </iframe>
+    {% endif %}
 
+    <hr>
     <h2>Рекомендуемые фильмы</h2>
+    <hr>
     <div class="recommended-movies">
         {% for rec_movie in recommended_movies %}
             <div class="recommended-card">
