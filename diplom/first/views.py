@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render  # noqa: F811
-from first.models import Movie
+from first.models import Movie, Genre
+from django.db.models import Prefetch
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
@@ -58,9 +59,26 @@ def login(request: HttpRequest) -> HttpResponse:
 
 # Загружаем фильмы из базы
 def load_movie_data():
-    movies = list(Movie.objects.all().values('id', 'title', 'genre', 'overview', 'poster_url'))
-    df = pd.DataFrame(movies)
-    df['combined'] = df['genre'].fillna('') + ' ' + df['overview'].fillna('')
+    # Загружаем все фильмы с жанрами
+    movies = Movie.objects.prefetch_related(
+        Prefetch('genre', queryset=Genre.objects.all(), to_attr='genre_list')
+    ).all()
+    
+    movie_data = []
+    
+    for movie in movies:
+        # Получаем список жанров фильма (объединяем их в строку)
+        genres = [genre.genre for genre in movie.genre_list]
+        combined = ' '.join(genres) + ' ' + movie.overview
+        movie_data.append({
+            'id': movie.id,
+            'title': movie.title,
+            'overview': movie.overview,
+            'poster_url': movie.poster_url,
+            'combined': combined
+        })
+    
+    df = pd.DataFrame(movie_data)
     return df
 
 # Получаем рекомендации
@@ -83,6 +101,7 @@ def get_recommendations(movie_id, top_n=5):
 # View: показать рекомендации для одного фильма
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
+
     recommendations = get_recommendations(movie.id)
 
     return render(request, 'first/movie_detail.html', 
@@ -94,16 +113,30 @@ def movie_detail(request, movie_id):
     
     
 def movie_list(request):
-        
-    query = request.GET.get('q')
-    if query:
-        movies = Movie.objects.filter(title__icontains=query).order_by('title')
+    selected_id = request.GET.get('category')
+    all_genres = Genre.objects.order_by('genre')
+    
+    if selected_id:
+        chosen_genre = get_object_or_404(Genre, pk=selected_id)
+        qs = Movie.objects.filter(genre=chosen_genre)
     else:
-        movies = Movie.objects.all().order_by('title')
+        chosen_genre=None
+        qs = Movie.objects.all()
+    query = request.GET.get('q')
     
-    paginator = Paginator(movies, 12)
+    if query:
+        qs = qs.filter(title__icontains=query)
+    qs = qs.order_by('title')
     
+    
+    paginator = Paginator(qs, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)    
-    
-    return render(request, 'first/movie_list.html', {'movies': movies, 'menu': menu, 'page_obj': page_obj})      
+    context = {
+        'page_obj': page_obj,
+        'all_genres': all_genres,
+        'menu': menu,
+        'selected_genre': chosen_genre,
+        'query': query,
+    }
+    return render(request, 'first/movie_list.html', context)   

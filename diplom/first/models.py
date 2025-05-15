@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class Movie(models.Model):
     title = models.CharField(max_length=255)
-    genre = models.CharField(max_length=255)
+    genre = models.ManyToManyField('Genre')
     overview = models.TextField()
     imdb_rating = models.FloatField()
     year = models.IntegerField()
@@ -23,4 +23,6 @@ class Feedback(models.Model):
         return f'{self.name} ({self.email}) — {self.create_time:%Y-%m-%d %H:%M}'
 
 class Genre(models.Model):
-    genre = 
+    genre = models.CharField(max_length=100, unique=True)
+    def __str__(self):
+        return self.genre

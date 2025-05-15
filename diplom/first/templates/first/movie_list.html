@@ -1,12 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <!-- Основной блок с фильмами -->
+    <!--Меню жанров -->
+    <nav class='genre-list'>
+        <ul>
+        <li>
+            <a href='{% url "movie_list" %}' class="{% if not selected_genre %}active{% endif %}">
+                Все жанры
+            </a>
+        </li>
+        
+        {% for genre in all_genres %}
+        <li>
+            <a href="{% url 'movie_list' %}?category={{ genre.id }}"
+            class="{% if genre == selected_genre %}active{% endif %}">
+            {{ genre.genre }}
+            </a>
+        </li>
+        {% endfor %}
+        </ul>
+    </nav>
+            
+
+
+    <!-- Поиск фильмов  -->
     <main class="container">
         <form method="get" action="{% url 'movie_list' %}" class="search-form">
             <input type="text" name="q" placeholder="Поиск фильмов..." value="{{ request.GET.q }}">
+            {% if selected_genre %}
+            <input type='hidden' name='category' value='{{ selected_genre.id }}'>
+            {% endif %}
             <button type="submit">Найти</button>
         </form>
+    <!-- Основной блок с фильмами -->
         <h2>Фильмы</h2>
         <div class="movie-list">
             {% for movie in page_obj %}
@@ -14,10 +40,13 @@
                     <img src="{{ movie.poster_url }}" alt="{{ movie.title }}">
                     <div class="movie-info">
                         <h3>{{ movie.title }}</h3>
-                        <p><strong>Жанр:</strong> {{ movie.genre }}</p>
+                        <p><strong>Жанр:</strong> 
+                    {% for genre in movie.genre.all %}
+                            {{ genre.genre }} 
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}</p>
                         <p><strong>Описание:</strong> {{ movie.overview|truncatechars:200 }}</p>
                         <p><strong>Рейтинг IMDb:</strong> {{ movie.imdb_rating }}</p>
-
                         <div class="button-wrapper">
                         <a href="{% url 'movie_detail' movie.id %}" class="btn">Подробнее</a>
                         </div>
@@ -25,11 +54,11 @@
                 </div>
             {% endfor %}
         </div>
-
+    <!-- Пагинация -->
         <div class="pagination">
             {% if page_obj.has_previous %}
-            <a href="?page=1">первая</a>
-            <a href="?page={{ page_obj.previous_page_number }}">назад</a>
+                <a href="?page=1{% if selected_genre %}&category={{ selected_genre.id }}{% endif %}">&laquo; Первая</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if selected_genre %}&category={{ selected_genre.id }}{% endif %}">Назад</a>
             {% endif %}
             <span class='current-page'>
                 Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}

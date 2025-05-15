@@ -249,3 +249,54 @@ body {
 .search-form button:hover {
     background-color: #1e60d3;
 }
+
+/* Контейнер меню жанров */
+.genre-list {
+margin-bottom: 20px;
+}
+
+/* Список жанров */
+.genre-list ul {
+display: flex;
+flex-wrap: wrap;           /* разрешаем перенос элементов на новые строки */
+gap: 10px;                 /* расстояние между пунктами */
+padding: 0;
+margin: 0;
+list-style: none;
+}
+
+/* Каждый пункт — примерно 25% ширины контейнера, минимум 120px */
+.genre-list li {
+flex: 0 1 calc(10% - 10px);
+min-width: 50px;
+}
+
+/* Для очень узких экранов: по две колонки */
+@media (max-width: 600px) {
+.genre-list li {
+flex: 0 1 calc(50% - 10px);
+}
+}
+
+/* Ссылка жанра */
+.genre-list a {
+display: block;
+padding: 8px 12px;
+background-color: #444;
+color: #eee;
+text-decoration: none;
+text-align: center;
+border-radius: 4px;
+transition: background-color 0.2s ease;
+}
+
+/* При наведении */
+.genre-list a:hover {
+background-color: #555;
+}
+
+/* Активный жанр */
+.genre-list a.active {
+background-color: #3a82f7;
+color: #fff;
+}

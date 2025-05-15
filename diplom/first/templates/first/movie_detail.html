@@ -8,7 +8,13 @@
         <img class="movie-poster" src="{{ movie.poster_url }}" alt="{{ movie.title }}">
         <div class="movie-meta">
             <h1>{{ movie.title }}</h1>
-            <p><strong>Жанр:</strong> {{ movie.genre }}</p>
+            <p><strong>Жанр:</strong> 
+            
+            {% for genre in movie.genre.all %}
+            {{ genre.genre }} {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+                
+            </p>
             <p><strong>Рейтинг:</strong> {{ movie.imdb_rating }}</p>
             <p><strong>Описание:</strong> {{ movie.overview }}</p>
         </div>

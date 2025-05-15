@@ -1,12 +1,13 @@
 import os
 import django
-import requests
-from first.models import Movie 
+
 
 # Настройка Django окружения
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'diplom.settings')
 django.setup()
 
+import requests
+from first.models import Movie 
 
 API_KEY = '4aaa2e5c484bf9dea5ab38738d634d7f'  
 TMDB_SEARCH_URL = 'https://api.themoviedb.org/3/search/movie'
