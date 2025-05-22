@@ -17,7 +17,7 @@ Including another URLconf
 
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from first import views # type: ignore
 
 urlpatterns = [
@@ -28,4 +28,6 @@ urlpatterns = [
     path('login', views.login, name='login'),
     path('movie/<int:movie_id>/', views.movie_detail, name='movie_detail'),
     path('', views.movie_list, name='movie_list'),  # список фильмов
+    
+    path('users/', include('users.urls', namespace='users')),
 ]

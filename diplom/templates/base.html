@@ -1,4 +1,5 @@
 {% load static %}
+
 <!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="en">
@@ -12,11 +13,16 @@
         <div class="container">
             <h1>Онлайн-Кинотеатр</h1>
             <ul class="nav-links">
-                
-                {% for item in menu %}
+
+                {% for item in mainmenu %}
                     <li><a href="{% url item.url_name %}"> {{ item.title }} </a></li>
                 {% endfor %}
+                {% if user.is_authenticated %}
+                <li class='last'><a href="{% url 'users:logout' %}">Выход</a></li>
                 
+                {% else %}
+                <li class='last'><a href="{% url 'users:login' %}">Вход</a> | <a href='#'>Регистрация</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>

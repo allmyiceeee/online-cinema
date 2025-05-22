@@ -9,7 +9,7 @@ django.setup()
 import requests
 from first.models import Movie 
 
-API_KEY = ''  
+API_KEY = '4aaa2e5c484bf9dea5ab38738d634d7f'
 TMDB_SEARCH_URL = 'https://api.themoviedb.org/3/search/movie'
 TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'
 

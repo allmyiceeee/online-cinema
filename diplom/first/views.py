@@ -12,13 +12,12 @@ from django.core.paginator import Paginator
 menu = [
         {'title': "Главная страница", 'url_name': 'movie_list'},
         {'title': "О сайте", 'url_name': 'about'},
-        {'title': "Обратная связь", 'url_name': 'contact'},
-        {'title': "Войти", 'url_name': 'login'}
-        
+        {'title': "Обратная связь", 'url_name': 'contact'},     
 ]
 
 # Create your views here.
 def index(request: HttpRequest) -> HttpResponse:
+    
     date = {
         'title': 'Главная страница',
         'menu': menu
@@ -53,7 +52,7 @@ def contact(request: HttpRequest) -> HttpResponse:
             }) 
 
 def login(request: HttpRequest) -> HttpResponse:
-    return render(request, 'first/login.html', {'title': 'О сайте', 'menu': menu}) 
+    return render(request, 'users/login.html', {'title': 'О сайте', 'menu': menu}) 
 
 #Рекомендательная система
 
