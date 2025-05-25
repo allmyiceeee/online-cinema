@@ -18,10 +18,10 @@
                     <li><a href="{% url item.url_name %}"> {{ item.title }} </a></li>
                 {% endfor %}
                 {% if user.is_authenticated %}
-                <li class='last'><a href="{% url 'users:logout' %}">Выход</a></li>
+                <li class='last'><a href="{% url 'users:profile' %}">{{ user.username }} | <a href="{% url 'users:logout' %}">Выход</a></li>
                 
                 {% else %}
-                <li class='last'><a href="{% url 'users:login' %}">Вход</a> | <a href='#'>Регистрация</a></li>
+                <li class='last'><a href="{% url 'users:login' %}">Вход</a> | <a href='{% url "users:register" %}'>Регистрация</a></li>
                 {% endif %}
             </ul>
         </div>

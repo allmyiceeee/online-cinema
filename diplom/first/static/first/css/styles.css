@@ -300,3 +300,31 @@ background-color: #555;
 background-color: #3a82f7;
 color: #fff;
 }
+
+.button {
+    display: inline-block;
+    background-color: #3a82f7;
+    color: white;
+    padding: 10px 16px;
+    margin: 5px 8px 5px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #3a82f7;
+    transform: translateY(-2px);
+}
+
+.button-secondary {
+    background-color: #444;
+    color: #eee;
+}
+
+.button-secondary:hover {
+    background-color: #666;
+}

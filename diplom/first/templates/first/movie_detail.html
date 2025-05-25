@@ -28,9 +28,26 @@
             allowfullscreen>
         </iframe>
     {% endif %}
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'users:add_to_wishlist' movie.id %}">
+            {% csrf_token %}
+            <input type='hidden' name='wishlist_type' value='home'>
+            <button type="submit" class="button">Хочу посмотреть дома</button>
+        </form>
 
+            <form method="post" action="{% url 'users:add_to_wishlist' movie.id %}">
+            {% csrf_token %}
+            <input type='hidden' name='wishlist_type' value='cinema'>
+            <button type="submit" class="button">Хочу посмотреть в кинотеатре</button>
+        </form>
+
+    {% else %}
+    <p>
+        <a href="{% url 'login' %}">Войдите</a>, чтобы добавить фильм в список
+    </p>
+    {% endif %}
     <hr>
-    <h2>Рекомендуемые фильмы</h2>
+    <h2>Похожие фильмы</h2>
     <hr>
     <div class="recommended-movies">
         {% for rec_movie in recommended_movies %}

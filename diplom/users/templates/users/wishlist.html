@@ -1,0 +1,26 @@
+{% extends "profile.html" %}
+
+{% block dashboard_content %}
+<h3>
+    {% if wishlist_type == 'home' %}
+    Хочу посмотреть дома
+    {% else %}
+    Хочу посмотреть в кинотеатре
+    {% endif %}
+</h3>
+<div class='movie-list'>
+    
+    {% for movie in movies  %}
+    <div class="movie-card">
+        <img src='{{ movie.poster_url }}' alt='{{ movie.title }}'>
+        <div class="movie-info">
+            <h3>{{ movie.title }}</h3>
+            <p><strong>Описание:</strong> {{ movie.overview|truncatechars:200 }}</p>
+            <a href='{% url "movie_detail" movie.id %}' class="btn">Подробнее</a>     
+        </div>
+    </div>
+    {% empty %}
+    <p>В вашем списке нет фильмов.</p>
+    {% endfor %}
+<div>
+{% endblock dashboard_content %}

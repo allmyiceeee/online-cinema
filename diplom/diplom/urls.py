@@ -23,11 +23,12 @@ from first import views # type: ignore
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('about', views.about, name='about'),
-
     path('contact', views.contact, name='contact'),
     path('login', views.login, name='login'),
     path('movie/<int:movie_id>/', views.movie_detail, name='movie_detail'),
     path('', views.movie_list, name='movie_list'),  # список фильмов
+
     
     path('users/', include('users.urls', namespace='users')),
+
 ]
