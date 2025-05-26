@@ -328,3 +328,77 @@ color: #fff;
 .button-secondary:hover {
     background-color: #666;
 }
+
+.dashboard-menu {
+    background-color: #1f1f1f;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    max-width: 300px;
+    margin-bottom: 30px;
+}
+
+.dashboard-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dashboard-menu ul li {
+    margin-bottom: 12px;
+}
+
+.dashboard-menu ul li a {
+    display: block;
+    padding: 10px 15px;
+    border-radius: 8px;
+    color: #eee;
+    background-color: #2a2a2a;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dashboard-menu ul li a:hover {
+    background-color: #ff4b2b;
+    color: #fff;
+}
+.ticket-form {
+    margin-top: 30px;
+}
+
+.ticket-options {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.ticket-select,
+.ticket-quantity {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #3a3a3a;
+    color: #fff;
+    font-size: 16px;
+    width: 200px;
+}
+
+.ticket-quantity {
+    width: 100px;
+}
+
+.ticket-button {
+    padding: 10px 20px;
+    background-color: #1e90ff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ticket-button:hover {
+    background-color: #0b65c2;
+}

@@ -8,9 +8,9 @@
         <li><a href="#">Настройки </a></li>
         <li><a href="{% url 'users:dashboard_wishlist' type='home' %}">Хочу смотреть дома</a></li>
         <li><a href="{% url 'users:dashboard_wishlist' type='cinema' %}">Хочу смотреть в кинотеатре</a></li>
-        <li><a href="#">Просмотренные фильмы</a></li>
-        <li><a href="#">Оцененные фильмы</a></li>
-        <li><a href="#">История покупок</a></li>
+        <li><a href="{% url 'users:dashboard_watched' %}">Просмотренные фильмы</a></li>
+        <li><a href="{% url 'users:dashboard_rated' %}">Оцененные фильмы</a></li>
+        <li><a href="{% url 'users:dashboard_purchases' %}">История покупок</a></li>
     </ul>
 </div>
 

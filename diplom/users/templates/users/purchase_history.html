@@ -1,0 +1,25 @@
+{% extends 'profile.html' %}
+
+{% block dashboard_content %}
+<h2>История покупок</h2>
+<table class="purchase-table">
+<tr>
+    <th>Фильм</th>
+    <th>Тип</th>
+    <th>Сеанс</th>
+    <th>Билеты</th>
+    <th>Цена</th>
+    <th>Дата покупки</th>
+</tr>
+{% for item in purchases %}
+<tr>
+    <td><a href="{% url 'movie_detail' item.movie.id %}">{{ item.movie.title }}</a></td>
+    <td>{{ item.get_purchase_type_display }}</td>
+    <td>{% if item.session_time %}{{ item.session_time|date:"d.m.Y H:i" }}{% else %}-{% endif %}</td>
+    <td>{{ item.quantity }}</td>
+    <td>{{ item.total_price }} ₽</td>
+    <td>{{ item.purchased_at|date:"d.m.Y H:i" }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

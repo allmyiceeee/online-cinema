@@ -7,9 +7,12 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from users.forms import RegisterUserForm
 from django.views.generic import CreateView
-from .models import Wishlist
+from .models import Wishlist,WatchedMovie, Rating, Purchase
 from first.models import Movie
 from django.contrib.auth.decorators import login_required
+from decimal import Decimal
+from django.utils import timezone
+from datetime import timedelta
 # Create your views here.
 
 class LoginUser(LoginView):
@@ -66,3 +69,68 @@ def add_to_wishlist(request, movie_id):
         if not existing.exists():
             Wishlist.objects.create(user=request.user, movie=movie, wishlist_type=wishlist_type)
     return redirect('movie_detail', movie_id=movie.id)
+
+@login_required
+def add_to_watched(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+    
+    WatchedMovie.objects.get_or_create(user=request.user, movie=movie)
+    return redirect('movie_detail', movie_id=movie.id)
+
+@login_required
+def watched_movies_view(request):
+    watched = WatchedMovie.objects.filter(user=request.user).select_related('movie')
+    movies = [entry.movie for entry in watched]
+    
+    return render(request, 'users/watched_movies.html', {
+        'movies': movies
+        })
+    
+@login_required
+def rate_movie(request, movie_id, value):
+    movie = get_object_or_404(Movie, id=movie_id)
+    if value not in ['Нравится', 'Не нравится']:
+        return redirect('movie_detail',movie_id=movie_id)
+    rating_value = 1 if value == 'Нравится' else 2
+    
+    Rating.objects.update_or_create(
+        user=request.user,
+        movie=movie,
+        defaults={'rating': rating_value}
+    )
+    return redirect('movie_detail', movie_id=movie.id)
+
+@login_required
+def rated_movies_view(request):
+    ratings = Rating.objects.filter(user=request.user).select_related('movie')
+    
+    return render(request, 'users/rated_movies.html', {
+        'ratings': ratings
+        })
+
+@login_required
+def purchase_history(request):
+    purchases = Purchase.objects.filter(user=request.user).select_related('movie')
+    return render(request, 'users/purchase_history.html', {'purchases': purchases})
+
+@login_required
+def buy_ticket(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+    if request.method == 'POST':
+        purchase_type = request.POST.get('purchase_type')
+        quantity = int(request.POST.get('quantity', 1))
+        price = Decimal('250.00') if purchase_type == 'cinama' else Decimal('100.00')
+        
+        session_time = None
+        if purchase_type == 'cinama':
+            session_time = timezone.now() + timedelta(days=3)
+        
+        Purchase.objects.create(
+            user=request.user, 
+            movie=movie, 
+            purchase_type=purchase_type, 
+            quantity=quantity, 
+            price_per_ticket=price, 
+            session_time=session_time
+            )
+        return redirect('users:dashboard_purchases')

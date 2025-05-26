@@ -40,7 +40,32 @@
             <input type='hidden' name='wishlist_type' value='cinema'>
             <button type="submit" class="button">Хочу посмотреть в кинотеатре</button>
         </form>
+        <form method='post' action="{% url 'users:add_to_watched' movie.id %}">
+            {% csrf_token %}
+            <button type="submit" class="button">Отметить как просмотренный</button>
+        </form>
+        <div class="rating-buttons">
+    <a href="{% url 'users:rate_movie' movie.id 'Нравится' %}" class="button">Нравится</a>
+    <a href="{% url 'users:rate_movie' movie.id 'Не нравится' %}" class="button">Не нравится</a>
+        </div>
 
+    <form method="post" action="{% url 'users:buy_ticket' movie.id %}" class="ticket-form">
+    {% csrf_token %}
+
+    <div class="ticket-options">
+        <select name="purchase_type" class="ticket-select">
+            <option value="home">Посмотреть дома</option>
+            <option value="cinema">Купить билет в кинотеатре</option>
+        </select>
+
+        <input type="number" name="quantity" value="1" min="1" class="ticket-quantity">
+    </div>
+
+    <button type="submit" class="ticket-button">Купить</button>
+</form>
+
+
+    
     {% else %}
     <p>
         <a href="{% url 'login' %}">Войдите</a>, чтобы добавить фильм в список
